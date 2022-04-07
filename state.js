@@ -1,3 +1,5 @@
+import {Pos} from './pos.js'
+
 export class State {
   constructor(grid_num) {
     this.grid_num = grid_num
@@ -7,14 +9,6 @@ export class State {
     this.x = null
     this.y = null
     this.pre = null
-  }
-
-  _deep_copy() {
-    let s = new State(this.grid_num)
-    for (let i = 0; i < this.buf.length; i++) {
-      s.buf.fill(this.buf[i], i, i + 1)
-    }
-    return s
   }
 
   get(x, y) {
@@ -37,51 +31,31 @@ export class State {
     this.buf.fill(new_v, byte_index, byte_index + 1)
   }
 
-  next() {
-    let result = new Array()
-    for (let i = 0; i < this.grid_num; i++) {
-      for (let j = 0; j < this.grid_num; j++) {
-        if (this.get(i, j) == this.busy) {
-          if (j - 1 >= 0 && this.get(i, j - 1) == this.free) {
-            let new_s = this._deep_copy()
-            new_s.x = i
-            new_s.y = j - 1
-            new_s.set(new_s.x, new_s.y, this.busy)
-            result.push(new_s)
-          }
-          if (i + 1 <= this.grid_num - 1 && this.get(i + 1, j) == this.free) {
-            let new_s = this._deep_copy()
-            new_s.x = i + 1
-            new_s.y = j
-            new_s.set(new_s.x, new_s.y, this.busy)
-            result.push(new_s)
-          }
-          if (j + 1 <= this.grid_num - 1 && this.get(i, j + 1) == this.free) {
-            let new_s = this._deep_copy()
-            new_s.x = i
-            new_s.y = j + 1
-            new_s.set(new_s.x, new_s.y, this.busy)
-            result.push(new_s)
-          }
-          if (i - 1 >= 0 && this.get(i - 1, j) == this.free) {
-            let new_s = this._deep_copy()
-            new_s.x = i - 1
-            new_s.y = j
-            new_s.set(new_s.x, new_s.y, this.busy)
-            result.push(new_s)
-          }
-        }
-      }
+  _shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
     }
+  }
+
+  next(pos) {
+    let result = new Array()
+    if (pos.y - 1 >= 0) {
+      result.push(new Pos(pos.x, pos.y - 1))
+    }
+    if (pos.x + 1 <= this.grid_num - 1) {
+      result.push(new Pos(pos.x + 1, pos.y))
+    }
+    if (pos.y + 1 <= this.grid_num - 1) {
+      result.push(new Pos(pos.x, pos.y + 1))
+    }
+    if (pos.x - 1 >= 0) {
+      result.push(new Pos(pos.x - 1, pos.y))
+    }
+    this._shuffle(result)
     return result
-  }
-
-  success() {
-    return this.get(this.grid_num - 1, this.grid_num - 1) == this.busy
-  }
-
-  key() {
-    return this.buf.toString()
   }
 
   toString() {

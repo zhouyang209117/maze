@@ -1,4 +1,6 @@
 import {State} from './state.js'
+import {Result} from './result.js'
+import {Pos} from './pos.js'
 
 export class Maze {
   constructor(grid_num) {
@@ -9,32 +11,32 @@ export class Maze {
         this.start.set(i, j, this.start.free)
       }
     }
-    this.start.set(0, 0, this.start.busy)
   }
 
-  get_result() {
-    let queue = new Array()
-    queue.push(this.start)
-    let visited = new Set()
-    let finish = null
-    while (queue.length != 0) {
-      let first = queue.shift()
-      if (first.success()) {
-        finish = first
-        break
-      } else {
-        let nextList = first.next()
-        if (nextList == null) {
-          continue
-        }
-        for (let a of nextList) {
-          if (!visited.has(a.key())) {
-            visited.add(a.key())
-            queue.push(a)
-          }
+  _dfs(s, pos) {
+
+    // if (s.success()) {
+    //   return new Result(s, true)
+    // }
+    s.set(pos.x, pos.y, s.busy)
+    if (pos.x == this.grid_num - 1 && pos.y == this.grid_num - 1) {
+      console.log(s)
+      console.log(s.toString())
+      return new Result(s, true)
+    }
+    let next_list = s.next(pos)
+    for (let tmp_pos of next_list) {
+      if (s.get(tmp_pos.x, tmp_pos.y) == s.free) {
+        let result = this._dfs(s, tmp_pos)
+        if (result.finish) {
+          return result
         }
       }
     }
-    return finish
+    return new Result(null, false)
+  }
+
+  create() {
+    return this._dfs(this.start, new Pos(0, 0))
   }
 }
