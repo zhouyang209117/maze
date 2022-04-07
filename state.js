@@ -11,7 +11,7 @@ export class State {
 
   _deep_copy() {
     let s = new State(this.grid_num)
-    for (let i = 0; i < this.buf[i].length; i++) {
+    for (let i = 0; i < this.buf.length; i++) {
       s.buf.fill(this.buf[i], i, i + 1)
     }
     return s

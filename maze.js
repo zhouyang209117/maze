@@ -28,12 +28,8 @@ export class Maze {
           continue
         }
         for (let a of nextList) {
-          // console.log("aaa")
-          // console.log(typeof a.toString())
-          // console.log(a.toString().length)
-          // console.log("bbb")
           if (!visited.has(a.key())) {
-            visited.add(a.toString())
+            visited.add(a.key())
             queue.push(a)
           }
         }
