@@ -1,6 +1,7 @@
 import {State} from './state.js'
 import {Result} from './result.js'
-import {Pos} from './pos.js'
+import {Grid} from './pos.js'
+import {Wall} from './pos.js'
 
 export class Maze {
   constructor(grid_num) {
@@ -11,23 +12,34 @@ export class Maze {
         this.start.set(i, j, this.start.free)
       }
     }
+    this.H = 0
+    this.V = 1
   }
 
-  _dfs(s, pos) {
+  _get_wall_pos(old, current) {
+    let wall = null
+    if (old.x == current.x && old.y > current.y) {
+      wall =  new Wall(old.x, old.y, this.H)
+    } else if (old.x < current.x && old.y == current.y) {
+      wall = new Wall(old.x + 1, old.y, this.V)
+    } else if (old.x == current.x && old.y < current.y) {
+      wall = new Wall(old.x, old.y + 1, this.H)
+    } else {
+      wall = new Wall(old.x, old.y, this.V)
+    }
+    return wall.x + "_" + wall.y + "_" + wall.d
+  }
 
-    // if (s.success()) {
-    //   return new Result(s, true)
-    // }
-    s.set(pos.x, pos.y, s.busy)
-    if (pos.x == this.grid_num - 1 && pos.y == this.grid_num - 1) {
-      console.log(s)
-      console.log(s.toString())
+  _dfs(s, grid, wall_removed) {
+    s.set(grid.x, grid.y, s.busy)
+    if (grid.x == this.grid_num - 1 && grid.y == this.grid_num - 1) {
       return new Result(s, true)
     }
-    let next_list = s.next(pos)
-    for (let tmp_pos of next_list) {
-      if (s.get(tmp_pos.x, tmp_pos.y) == s.free) {
-        let result = this._dfs(s, tmp_pos)
+    let next_list = s.next(grid)
+    for (let tmp_grid of next_list) {
+      if (s.get(tmp_grid.x, tmp_grid.y) == s.free) {
+        wall_removed.push(this._get_wall_pos(grid, tmp_grid))
+        let result = this._dfs(s, tmp_grid)
         if (result.finish) {
           return result
         }
@@ -37,6 +49,8 @@ export class Maze {
   }
 
   create() {
-    return this._dfs(this.start, new Pos(0, 0))
+    let wall_removed = new Array()
+    let s = this._dfs(this.start, new Grid(0, 0), wall_removed)
+    return {state: s, wall_removed: wall_removed}
   }
 }
