@@ -1,19 +1,23 @@
 {
   "name": "maze",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "init": "npm install browserify -g & npm install --save-dev babel-preset-es2015 babel-cli -D",
+    "build": "babel -d dist & browserify dist/maze.js -o dist/bundle.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "mocha": "^9.1.3"
   },
   "dependencies": {
-    "fs-es6": "^0.0.2"
+    "fs-es6": "^0.0.2",
+    "live-server": "^1.2.1"
   },
   "browser": {
     "fs": "fs-es6"

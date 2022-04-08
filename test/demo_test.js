@@ -1,14 +1,4 @@
-import {Calc} from '../calc.js'
 import assert from 'assert'
-
-describe('Calc', function() {
-  describe('add', function() {
-    it('', function() {
-      let calc = new Calc()
-      assert.equal(true, calc.add(1, 1) == 2)
-    })
-  })
-})
 
 describe('Uint8Array', function() {
   describe('Uint8Array', function() {

@@ -1,4 +1,4 @@
-import {Pos} from './pos.js'
+import {Grid} from './pos.js'
 
 export class State {
   constructor(grid_num) {
@@ -43,16 +43,16 @@ export class State {
   next(pos) {
     let result = new Array()
     if (pos.y - 1 >= 0) {
-      result.push(new Pos(pos.x, pos.y - 1))
+      result.push(new Grid(pos.x, pos.y - 1))
     }
     if (pos.x + 1 <= this.grid_num - 1) {
-      result.push(new Pos(pos.x + 1, pos.y))
+      result.push(new Grid(pos.x + 1, pos.y))
     }
     if (pos.y + 1 <= this.grid_num - 1) {
-      result.push(new Pos(pos.x, pos.y + 1))
+      result.push(new Grid(pos.x, pos.y + 1))
     }
     if (pos.x - 1 >= 0) {
-      result.push(new Pos(pos.x - 1, pos.y))
+      result.push(new Grid(pos.x - 1, pos.y))
     }
     this._shuffle(result)
     return result

@@ -39,7 +39,7 @@ export class Maze {
     for (let tmp_grid of next_list) {
       if (s.get(tmp_grid.x, tmp_grid.y) == s.free) {
         wall_removed.push(this._get_wall_pos(grid, tmp_grid))
-        let result = this._dfs(s, tmp_grid)
+        let result = this._dfs(s, tmp_grid, wall_removed)
         if (result.finish) {
           return result
         }
