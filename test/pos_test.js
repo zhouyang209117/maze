@@ -1,5 +1,5 @@
-import {Grid} from '../pos.js'
-import {Wall} from '../pos.js'
+import {Grid} from '../js/pos.js'
+import {Wall} from '../js/pos.js'
 
 describe('Calc', function() {
   describe('add', function() {

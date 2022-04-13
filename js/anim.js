@@ -4,7 +4,7 @@ var canvas = document.getElementById('canvas'),
     context = canvas.getContext('2d');
 var point_x = 0
 var t_start = new Date().getTime();
-var maze = new Maze(5)
+var maze = new Maze(100)
 var result = maze.create()
 
 
@@ -45,10 +45,9 @@ function draw() {
 
 
 function animate() {
-    context.clearRect(0,0, canvas.width,canvas.height);
-    update();
-    draw();
-    window.requestNextAnimationFrame(animate);
+    context.clearRect(0,0, canvas.width,canvas.height)
+    draw()
+    window.requestNextAnimationFrame(animate)
 }
 
-window.requestNextAnimationFrame(animate);
+window.requestNextAnimationFrame(animate)

@@ -1,4 +1,4 @@
-import {Maze} from '../maze.js'
+import {Maze} from '../js/maze.js'
 import assert from 'assert'
 
 describe('Maze', function() {

@@ -1,4 +1,4 @@
-import {State} from '../state.js'
+import {State} from '../js/state.js'
 import assert from 'assert'
 
 describe('State1', function() {
